@@ -35,13 +35,14 @@ function readOpened() {
 }
 
 // The paper image is 1024 by 1536 with torn edges. Slicing it into a border image keeps the
-// torn edges at their natural look while the middle stretches to fit any amount of text.
+// corners at their natural look and the smooth middle stretches to fit any amount of text.
+// The edges use "round", so a long letter repeats the torn edge instead of stretching it.
 const paperStyle = {
   "--bw": "clamp(1.25rem,5vw,2.25rem)",
   borderStyle: "solid",
   borderColor: "transparent",
   borderWidth: "var(--bw)",
-  borderImage: `url(${img("paper.png")}) 90 fill / var(--bw) stretch`,
+  borderImage: `url(${img("paper.png")}) 90 fill / var(--bw) round`,
 } as React.CSSProperties
 
 export default function LetterPage() {
@@ -156,7 +157,7 @@ export default function LetterPage() {
 
   return (
     <PageShell decor={DECOR} corners={[]}>
-      <main className="relative z-10 mx-auto flex min-h-dvh w-full max-w-3xl flex-col px-6 pt-4 pb-10">
+      <main className="relative z-10 mx-auto flex min-h-dvh w-full max-w-3xl flex-col px-6 pt-4 pb-[clamp(3rem,8vw,4rem)]">
         <BackLink />
 
         {phase !== "open" ? (
@@ -202,7 +203,7 @@ export default function LetterPage() {
             >
               <article
                 style={paperStyle}
-                className="min-h-[min(calc(100dvh-9rem),56rem)] px-[clamp(0.75rem,3vw,1.75rem)] pt-[clamp(4.5rem,22vw,7.5rem)] pb-[clamp(5.5rem,26vw,9rem)] text-[#4a1226]"
+                className="min-h-[min(calc(100dvh-9rem),56rem)] px-[clamp(0.75rem,3vw,1.75rem)] pt-[clamp(4.5rem,16vw,5.5rem)] pb-[clamp(6rem,24vw,8rem)] text-[#4a1226]"
               >
                 <h1
                   data-line
@@ -211,7 +212,7 @@ export default function LetterPage() {
                 >
                   {LETTER_GREETING}
                 </h1>
-                <div className="mt-3 flex flex-col gap-[0.9em] font-hand text-[clamp(1.2rem,4.6vw,1.6rem)] leading-[1.55] font-medium">
+                <div className="mt-3 flex flex-col gap-[0.9em] font-hand text-[1.2rem] leading-[1.6] font-medium sm:text-[1.3rem]">
                   {LETTER_PARAGRAPHS.map((text) => (
                     <p key={text} data-line style={hidden}>
                       {text}
@@ -239,7 +240,7 @@ export default function LetterPage() {
                 width={IMG_SIZE}
                 height={IMG_SIZE}
                 decoding="async"
-                className="pointer-events-none absolute -top-[9%] -left-[7%] w-[40%] max-w-[15rem] select-none"
+                className="pointer-events-none absolute -top-[clamp(1.25rem,5vw,2.5rem)] -left-[clamp(0.75rem,4vw,2rem)] w-[34%] max-w-[10.5rem] select-none"
               />
               <img
                 src={img("letter-flowers-bottom.png")}
@@ -247,7 +248,7 @@ export default function LetterPage() {
                 width={IMG_SIZE}
                 height={IMG_SIZE}
                 decoding="async"
-                className="pointer-events-none absolute -right-[7%] -bottom-[3%] w-[40%] max-w-[15rem] -scale-x-100 select-none"
+                className="pointer-events-none absolute -right-[clamp(0.75rem,4vw,2rem)] -bottom-[clamp(1rem,4vw,2rem)] w-[34%] max-w-[10.5rem] -scale-x-100 select-none"
               />
               <img
                 src={img("heart-sparkle.png")}
@@ -255,7 +256,7 @@ export default function LetterPage() {
                 width={IMG_SIZE}
                 height={IMG_SIZE}
                 decoding="async"
-                className="pointer-events-none absolute -top-[3%] right-[1%] w-[clamp(3.5rem,17vw,6rem)] rotate-6 select-none"
+                className="pointer-events-none absolute -top-[clamp(1.25rem,5vw,2.25rem)] right-[clamp(0rem,1vw,0.75rem)] w-[clamp(3.5rem,17vw,6rem)] rotate-6 select-none"
               />
             </div>
           </div>

@@ -1,14 +1,19 @@
 // Edit the letter here. Each paragraph is its own entry in the list.
 
-export const LETTER_GREETING = "Dear babyy,"
+export const LETTER_GREETING = "Dear jobi,"
 
 export const LETTER_PARAGRAPHS: string[] = [
-  "Happy monthsary! This is just a small website, but I made every part of it thinking of you.",
-  "Thank you for saying yes on August 20. Since then my days feel lighter and my heart feels at home.",
-  "I love your laugh, your kindness, and the way you make simple days special. I can’t wait to make more memories with you.",
+  "Happy second monthsary babyy!", 
+  "i've made this website pala to show you how much i love you and how grateful i am to have you in my life. gulat ka 'no? hehehehe. i wanted to make something special for you, something na pwede mong balikan whenever you miss me or whenever you need a little reminder of how much you mean to me. simple website lang sya, pero i hope you can feel all the love i put into making this for you.",
+  "2 months na tayoooo bebii! grabe, ang bilis talaga ng panahon 'no, naaalala ko pa yung time na nangliligaw aq sa'yo e and ngayon we're already celebrating our second monthsary na WAHAHAHAHA. pero kidding aside, i just wanna say thank you bebii. i'm really thankful for having the chance to meet someone like you. these past few months, days, and even before maging tayo have always been special for me kasi you we're a part of every single one of them.",
+  "thank you for staying by my side and for being with me through everything, babyy. thank you for your time, your patience, your understanding, and all the little things you do for me, i really appreciate all those things. i hope you know that i notice your efforts, and i hope you never think that the things you do for me go unappreciated. i'm really grateful for you",
+  "i know that i'm not perfect and there are times na baka hindi ko alam yung tamang sasabihin or gawin. there might be moments when i unintentionally hurt your feelings, misunderstand you, or make you feel things that i never wanted you to feel. and i'm really sorry for those times bebii. i know that loving someone doesn't automatically mean na i'll always get everything right, and i don't want to promise you na i'll never make mistakes, because i know that i'm still learning, too. pero what i can promise you is that i'll always try to learn from my mistakes and do better next time. i want to be better, not just because i want to be the person you deserve, but also because i want to give our relationship the love, care, and effort that it deserves. gusto kong matutunan kung paano ka mas mamahalin ng tama, kung paano kita mas maiintindihan, and kung paano ko maipaparamdam sa'yo na you're loved and appreciated, even in the simplest ways. i know that i still have a lot to learn, pero i hope you'll know na i'm willing to grow and work on myself, not just for you, but for us, too. i want us to keep learning from each other, and kahit may times na hindi natin agad, maintindihan ang isa't isa, i hope we always find a way to work things out together. and thank you for still choosing to stay, even during those moments when things aren't perfect between us. thank you for giving me the chance to learn, to grow, and to become better, not just for you but also for us. i never want to take your love, patience, and presence for granted. i'm willing to put in that effort because, you and our relationship mean so much to me, and i want to keep becoming someone who can love you better every single day.",
+  "i also want you to know na you don't always have to be strong around me and hindi required maging okay palagi. if things ever feel heavy and overwhelming, or if ever may days when you don't feel like yourself, please remember na you have me bebii. you can always talk to me, rant to me about anything, tell me what's bothering you, or just let me be there for you. you don't have to get through everything alone, okee. you have me babyy, we'll figure it out together.",
+  "i love you, babyy. mahal na mahal kita, more than i can ever properly put into words. and if there's one thing i want you to always remember, it's that i will keep choosing you. i'll keep choosing you over and over again, every single day. i will forever choose you babyy even sa mga araw na hindi tayo okay, sa mga times na hindi natin agad maintindihan ang isa't-isa, i'll still choose you even when things get too difficult. ikaw yung gusto kong makasama sa lahat ng bagay, good or bad. i want us to keep on learning and growing to understand each other more better and figure things out together. alam ko na hindi magiging madali, but i hope we would alaways keep on choosing each other no matter what.",
+  "Happy motmot ulit satin! i love you so much bebii"
 ]
 
-export const LETTER_CLOSING = "Forever yours,"
+export const LETTER_CLOSING = "Your baby,"
 
 // TODO: replace [YOUR NAME] with your own name. It stays on one line and shrinks to fit.
-export const LETTER_SIGNATURE = "[YOUR NAME]"
+export const LETTER_SIGNATURE = "Btan"
