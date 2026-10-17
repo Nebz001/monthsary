@@ -16,4 +16,4 @@ export const LETTER_PARAGRAPHS: string[] = [
 export const LETTER_CLOSING = "Your baby,"
 
 // TODO: replace [YOUR NAME] with your own name. It stays on one line and shrinks to fit.
-export const LETTER_SIGNATURE = "Btan"
+export const LETTER_SIGNATURE = "btan"
