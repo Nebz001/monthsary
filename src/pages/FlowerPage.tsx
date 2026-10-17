@@ -1,4 +1,5 @@
-import { useRef, useState } from "react"
+import { useEffect, useRef, useState } from "react"
+import { animate } from "animejs"
 
 import BackLink from "@/components/BackLink"
 import type { DecorItem } from "@/components/FloatingDecor"
@@ -65,8 +66,25 @@ export default function FlowerPage() {
   // Kept after closing so the dialog can fade out showing the photo it had.
   const [shownIndex, setShownIndex] = useState(0)
   const gridRef = useRef<HTMLDivElement>(null)
+  const headerRef = useRef<HTMLElement>(null)
 
   useRevealOnScroll(gridRef, animateIn)
+
+  // Arrival after the exit transition on the home page: the title eases up into place,
+  // and the polaroids then drop in on their own.
+  useEffect(() => {
+    if (!animateIn || !headerRef.current) return
+    const arrive = animate(headerRef.current, {
+      opacity: [0, 1],
+      translateY: [28, 0],
+      scale: [0.96, 1],
+      duration: 850,
+      ease: "outCubic",
+    })
+    return () => {
+      arrive.revert()
+    }
+  }, [animateIn])
 
   const hiddenStyle = animateIn ? { opacity: 0 } : undefined
 
@@ -80,7 +98,11 @@ export default function FlowerPage() {
       <main className="relative z-10 mx-auto flex w-full max-w-4xl flex-col px-4 pt-4 pb-[clamp(9rem,28vw,14rem)] sm:px-6">
         <BackLink />
 
-        <header className="mt-1 mb-8 text-center sm:mb-10">
+        <header
+          ref={headerRef}
+          style={animateIn ? { opacity: 0 } : undefined}
+          className="mt-1 mb-8 text-center sm:mb-10"
+        >
           <h1 className="font-script text-[clamp(2.8rem,11vw,5.25rem)] leading-[1.05] text-foreground">
             {PAGE_TITLE}
           </h1>
