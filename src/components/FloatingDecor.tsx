@@ -1,10 +1,8 @@
 import { useEffect, useRef } from "react"
 import { animate } from "animejs"
 
+import { IMG_SIZE as SIZE, img } from "@/lib/assets"
 import { usePrefersReducedMotion } from "@/hooks/usePrefersReducedMotion"
-
-const IMG = `${import.meta.env.BASE_URL}images/`
-const SIZE = 1254
 
 // Share of each (square, padded) image that the artwork itself covers.
 // Item sizes below describe the visible artwork, then get divided by this.
@@ -17,7 +15,7 @@ const COVERAGE = {
 
 type Kind = keyof typeof COVERAGE
 
-type Item = {
+export type DecorItem = {
   src: Kind
   // Centre of the item, as a percentage of the screen.
   x: number
@@ -30,21 +28,11 @@ type Item = {
   className?: string
 }
 
-const ITEMS: Item[] = [
-  { src: "heart-small", x: 10, y: 11, size: "clamp(26px,4.6vw,42px)", rotate: -10, motion: "float" },
-  { src: "sparkle", x: 21, y: 6.5, size: "clamp(14px,2.2vw,20px)", rotate: 0, motion: "twinkle" },
-  { src: "sparkle", x: 90, y: 30, size: "clamp(12px,1.9vw,18px)", rotate: 0, motion: "twinkle" },
-  { src: "petal-pink", x: 8, y: 38, size: "clamp(28px,4.2vw,40px)", rotate: -25, motion: "float", className: "max-sm:hidden" },
-  { src: "petal-pink", x: 91, y: 37, size: "clamp(28px,4.2vw,40px)", rotate: 60, motion: "float", className: "sm:hidden" },
-  { src: "petal-pink", x: 91, y: 49, size: "clamp(28px,4.2vw,40px)", rotate: 70, motion: "float", className: "max-sm:hidden" },
-  { src: "sparkle", x: 9.5, y: 55, size: "clamp(10px,1.6vw,14px)", rotate: 0, motion: "twinkle", className: "max-sm:hidden" },
-  { src: "heart-sparkle", x: 87, y: 77, size: "clamp(32px,5vw,48px)", rotate: 12, motion: "float", className: "max-sm:hidden" },
-]
 
 function Corner({ className }: { className: string }) {
   return (
     <img
-      src={`${IMG}corner-flowers.png`}
+      src={img("corner-flowers.png")}
       alt=""
       width={SIZE}
       height={SIZE}
@@ -54,7 +42,7 @@ function Corner({ className }: { className: string }) {
   )
 }
 
-export default function FloatingDecor() {
+export default function FloatingDecor({ items }: { items: DecorItem[] }) {
   const rootRef = useRef<HTMLDivElement>(null)
   const reduced = usePrefersReducedMotion()
 
@@ -97,10 +85,10 @@ export default function FloatingDecor() {
       <Corner className="top-0 right-0 -scale-x-100" />
       <Corner className="bottom-0 left-0 -scale-y-100" />
 
-      {ITEMS.map((item, i) => (
+      {items.map((item, i) => (
         <img
           key={i}
-          src={`${IMG}${item.src}.png`}
+          src={img(`${item.src}.png`)}
           alt=""
           width={SIZE}
           height={SIZE}

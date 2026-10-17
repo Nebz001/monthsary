@@ -1,12 +1,23 @@
 import { useCallback, useEffect, useRef, useState } from "react"
 import { animate } from "animejs"
 
-import FloatingDecor from "@/components/FloatingDecor"
+import type { DecorItem } from "@/components/FloatingDecor"
 import Keypad from "@/components/Keypad"
+import PageShell from "@/components/PageShell"
 import { UNLOCK_CODE } from "@/config"
 import { usePrefersReducedMotion } from "@/hooks/usePrefersReducedMotion"
+import { IMG_SIZE, img } from "@/lib/assets"
 
-const IMG = `${import.meta.env.BASE_URL}images/`
+const DECOR: DecorItem[] = [
+  { src: "heart-small", x: 10, y: 11, size: "clamp(26px,4.6vw,42px)", rotate: -10, motion: "float" },
+  { src: "sparkle", x: 21, y: 6.5, size: "clamp(14px,2.2vw,20px)", rotate: 0, motion: "twinkle" },
+  { src: "sparkle", x: 90, y: 30, size: "clamp(12px,1.9vw,18px)", rotate: 0, motion: "twinkle" },
+  { src: "petal-pink", x: 8, y: 38, size: "clamp(28px,4.2vw,40px)", rotate: -25, motion: "float", className: "max-sm:hidden" },
+  { src: "petal-pink", x: 91, y: 37, size: "clamp(28px,4.2vw,40px)", rotate: 60, motion: "float", className: "sm:hidden" },
+  { src: "petal-pink", x: 91, y: 49, size: "clamp(28px,4.2vw,40px)", rotate: 70, motion: "float", className: "max-sm:hidden" },
+  { src: "sparkle", x: 9.5, y: 55, size: "clamp(10px,1.6vw,14px)", rotate: 0, motion: "twinkle", className: "max-sm:hidden" },
+  { src: "heart-sparkle", x: 87, y: 77, size: "clamp(32px,5vw,48px)", rotate: 12, motion: "float", className: "max-sm:hidden" },
+]
 const WRONG_MESSAGE = "Not quite, try again babyy"
 
 type Status = "idle" | "checking" | "wrong" | "unlocking"
@@ -125,12 +136,7 @@ export default function LockScreen({ onUnlock }: LockScreenProps) {
   }, [locked, digits, addDigit, backspace, submit])
 
   return (
-    <div
-      ref={rootRef}
-      className="relative min-h-dvh w-full overflow-x-hidden overflow-y-auto bg-background"
-    >
-      <FloatingDecor />
-
+    <PageShell ref={rootRef} decor={DECOR}>
       <main
         className="relative z-10 mx-auto flex min-h-dvh w-full max-w-[min(28rem,72dvh)] flex-col items-center justify-center px-7 py-[1.5dvh] text-center"
         style={{ "--key-h": "clamp(2.75rem,7.2dvh,5rem)" } as React.CSSProperties}
@@ -149,17 +155,17 @@ export default function LockScreen({ onUnlock }: LockScreenProps) {
             }}
           />
           <img
-            src={`${IMG}lock-closed.png`}
+            src={img("lock-closed.png")}
             alt=""
-            width={1254}
-            height={1254}
+            width={IMG_SIZE}
+            height={IMG_SIZE}
             className={`absolute inset-0 size-full select-none transition-opacity duration-300 ${status === "unlocking" ? "opacity-0" : "opacity-100"}`}
           />
           <img
-            src={`${IMG}lock-opened.png`}
+            src={img("lock-opened.png")}
             alt=""
-            width={1254}
-            height={1254}
+            width={IMG_SIZE}
+            height={IMG_SIZE}
             className={`absolute inset-0 size-full select-none transition-opacity duration-300 ${status === "unlocking" ? "opacity-100" : "opacity-0"}`}
           />
         </div>
@@ -210,6 +216,6 @@ export default function LockScreen({ onUnlock }: LockScreenProps) {
           onBackspace={backspace}
         />
       </main>
-    </div>
+    </PageShell>
   )
 }

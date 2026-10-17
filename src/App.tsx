@@ -1,8 +1,12 @@
 import { useCallback, useState } from "react"
+import { HashRouter, Navigate, Route, Routes } from "react-router-dom"
 
 import LockScreen from "@/components/LockScreen"
-import NextPage from "@/components/NextPage"
 import { SESSION_KEY } from "@/config"
+import FlowerPage from "@/pages/FlowerPage"
+import HomePage from "@/pages/HomePage"
+import LetterPage from "@/pages/LetterPage"
+import SongPage from "@/pages/SongPage"
 
 function readUnlocked() {
   try {
@@ -24,7 +28,22 @@ function App() {
     setUnlocked(true)
   }, [])
 
-  return unlocked ? <NextPage /> : <LockScreen onUnlock={handleUnlock} />
+  // The lock sits in front of every route, so a direct link still asks for the date first.
+  return (
+    <HashRouter>
+      {unlocked ? (
+        <Routes>
+          <Route path="/" element={<HomePage />} />
+          <Route path="/flower" element={<FlowerPage />} />
+          <Route path="/letter" element={<LetterPage />} />
+          <Route path="/song" element={<SongPage />} />
+          <Route path="*" element={<Navigate to="/" replace />} />
+        </Routes>
+      ) : (
+        <LockScreen onUnlock={handleUnlock} />
+      )}
+    </HashRouter>
+  )
 }
 
 export default App
