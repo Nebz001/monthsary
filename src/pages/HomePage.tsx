@@ -3,21 +3,26 @@ import { animate, stagger } from "animejs"
 import { useNavigate } from "react-router-dom"
 
 import type { DecorItem } from "@/components/FloatingDecor"
+import HintPill from "@/components/HintPill"
 import HomeItem from "@/components/HomeItem"
 import PageShell from "@/components/PageShell"
+import SongArrow from "@/components/SongArrow"
 import { usePrefersReducedMotion } from "@/hooks/usePrefersReducedMotion"
 import { IMG_SIZE, img } from "@/lib/assets"
 
 const DECOR: DecorItem[] = [
   { src: "heart-small", x: 12, y: 11.3, size: "clamp(26px,4.6vw,42px)", rotate: -10, motion: "float", className: "max-sm:hidden" },
-  { src: "heart-small", x: 10, y: 36, size: "clamp(22px,7vw,34px)", rotate: -12, motion: "float", className: "sm:hidden" },
+  { src: "heart-small", x: 9, y: 41, size: "clamp(22px,7vw,34px)", rotate: -12, motion: "float", className: "sm:hidden" },
   { src: "sparkle", x: 19.5, y: 7, size: "clamp(14px,2.2vw,20px)", rotate: 0, motion: "twinkle" },
   { src: "sparkle", x: 91.5, y: 36.5, size: "clamp(12px,1.9vw,18px)", rotate: 0, motion: "twinkle", className: "max-sm:hidden" },
-  { src: "sparkle", x: 88, y: 45.6, size: "clamp(10px,3vw,14px)", rotate: 0, motion: "twinkle", className: "sm:hidden" },
+  { src: "sparkle", x: 80, y: 46, size: "clamp(10px,3vw,14px)", rotate: 0, motion: "twinkle", className: "sm:hidden" },
   { src: "petal-pink", x: 8, y: 42.5, size: "clamp(28px,4.2vw,40px)", rotate: -25, motion: "float", className: "max-sm:hidden" },
-  { src: "petal-pink", x: 89, y: 32, size: "clamp(24px,7vw,34px)", rotate: 40, motion: "float", className: "sm:hidden" },
-  { src: "heart-small", x: 86, y: 73.5, size: "clamp(24px,3.8vw,34px)", rotate: 12, motion: "float", className: "max-sm:hidden" },
+  { src: "petal-pink", x: 84, y: 20, size: "clamp(24px,7vw,34px)", rotate: 40, motion: "float", className: "sm:hidden" },
+  { src: "heart-small", x: 94, y: 81, size: "clamp(24px,3.8vw,34px)", rotate: 12, motion: "float", className: "max-sm:hidden" },
 ]
+
+// Wait for the pill and the three items to finish fading in before the arrow and glow start.
+const ATTENTION_DELAY = 2400
 
 const CIRCLE_DESKTOP = "sm:[--c:min(26vw,26dvh,17rem)]"
 
@@ -28,6 +33,8 @@ export default function HomePage() {
   const mainRef = useRef<HTMLElement>(null)
   const navigate = useNavigate()
   const leaving = useRef(false)
+  const pillRef = useRef<HTMLAnchorElement>(null)
+  const songCircleRef = useRef<HTMLSpanElement>(null)
 
   useEffect(() => {
     if (!playIntro || !mainRef.current) return
@@ -43,6 +50,23 @@ export default function HomePage() {
     }
   }, [playIntro])
 
+  // Very soft pulsing glow on the Song circle, gentler than the hover glow. Not under reduced motion.
+  useEffect(() => {
+    const glow = songCircleRef.current?.querySelector("[data-pulse]")
+    if (reduced || !glow) return
+    const pulse = animate(glow, {
+      opacity: [0, 0.7],
+      duration: 2200,
+      delay: ATTENTION_DELAY,
+      ease: "inOutSine",
+      loop: true,
+      alternate: true,
+    })
+    return () => {
+      pulse.revert()
+    }
+  }, [reduced])
+
   // Leaving home: the chosen circle swells and fades while everything else drifts away,
   // then the route changes. Modified clicks (new tab) and reduced motion skip it.
   const handleOpen = (e: MouseEvent<HTMLAnchorElement>, to: string) => {
@@ -56,7 +80,7 @@ export default function HomePage() {
     leaving.current = true
     const chosen = e.currentTarget
     const others = Array.from(
-      mainRef.current.querySelectorAll("[data-intro]"),
+      mainRef.current.querySelectorAll("[data-intro], [data-arrow]"),
     ).filter((el) => el !== chosen)
     animate(others, {
       opacity: [1, 0],
@@ -108,6 +132,12 @@ export default function HomePage() {
           I made three little things for you. Tap one to open it.
         </p>
 
+        <HintPill
+          ref={pillRef}
+          style={hidden}
+          onClick={(e) => handleOpen(e, "/song")}
+        />
+
         <nav
           aria-label="Things I made for you"
           className="mt-[1.5dvh] grid w-full grid-cols-2 justify-items-center gap-x-4 gap-y-[2dvh] sm:flex sm:justify-center sm:gap-[3vw]"
@@ -136,8 +166,19 @@ export default function HomePage() {
             sizeClass={`[--c:36vw] ${CIRCLE_DESKTOP}`}
             style={hidden}
             onClick={(e) => handleOpen(e, "/song")}
+            circleRef={songCircleRef}
+            pulse
           />
         </nav>
+
+        <SongArrow
+          containerRef={mainRef}
+          fromRef={pillRef}
+          toRef={songCircleRef}
+          playIntro={playIntro}
+          introDelay={ATTENTION_DELAY}
+          reduced={reduced}
+        />
 
         <footer
           data-intro
