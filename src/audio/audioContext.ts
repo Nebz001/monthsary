@@ -9,6 +9,11 @@ export type AudioPlayerState = {
   toggle: () => void
   retry: () => void
   seek: (seconds: number) => void
+  // Volume from 0 to 1, and whether the song is muted.
+  volume: number
+  muted: boolean
+  setVolume: (volume: number) => void
+  toggleMute: () => void
 }
 
 export const AudioPlayerContext = createContext<AudioPlayerState | null>(null)

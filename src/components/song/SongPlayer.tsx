@@ -1,4 +1,11 @@
-import { LoaderCircleIcon, PauseIcon, PlayIcon } from "lucide-react"
+import {
+  LoaderCircleIcon,
+  PauseIcon,
+  PlayIcon,
+  Volume1Icon,
+  Volume2Icon,
+  VolumeXIcon,
+} from "lucide-react"
 
 import { useAudioPlayer } from "@/audio/audioContext"
 import { Button } from "@/components/ui/button"
@@ -12,8 +19,22 @@ function formatTime(seconds: number) {
 // Our own controls for the app-wide audio element. Nothing plays until she presses play,
 // and the song keeps playing after she leaves this page.
 export default function SongPlayer({ title }: { title: string }) {
-  const { playing, buffering, failed, duration, current, toggle, retry, seek } =
-    useAudioPlayer()
+  const {
+    playing,
+    buffering,
+    failed,
+    duration,
+    current,
+    toggle,
+    retry,
+    seek,
+    volume,
+    muted,
+    setVolume,
+    toggleMute,
+  } = useAudioPlayer()
+  const silent = muted || volume === 0
+  const VolumeIcon = silent ? VolumeXIcon : volume < 0.5 ? Volume1Icon : Volume2Icon
 
   const label = playing ? `Pause ${title}` : `Play ${title}`
 
@@ -81,6 +102,33 @@ export default function SongPlayer({ title }: { title: string }) {
           <PlayIcon className="translate-x-0.5 fill-current" aria-hidden="true" />
         )}
       </Button>
+
+      <div className="mt-1 flex w-full max-w-[16rem] items-center gap-2">
+        <Button
+          type="button"
+          variant="ghost"
+          size="icon-lg"
+          aria-label={silent ? "Unmute" : "Mute"}
+          aria-pressed={silent}
+          onClick={toggleMute}
+          className="size-11 shrink-0 touch-manipulation rounded-full text-blush hover:bg-transparent hover:text-foreground focus-visible:ring-4 focus-visible:ring-ring/60"
+        >
+          <VolumeIcon className="size-6" aria-hidden="true" />
+        </Button>
+        <Slider
+          min={0}
+          max={100}
+          step={5}
+          largeStep={20}
+          value={[silent ? 0 : Math.round(volume * 100)]}
+          onValueChange={(value) =>
+            setVolume((Array.isArray(value) ? value[0] : (value as number)) / 100)
+          }
+          thumbLabel="Volume"
+          getThumbValueText={(value) => `${value} percent`}
+          className="py-2"
+        />
+      </div>
     </div>
   )
 }
