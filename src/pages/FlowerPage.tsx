@@ -1,7 +1,6 @@
 import { useRef, useState } from "react"
-import { ChevronLeftIcon } from "lucide-react"
-import { Link } from "react-router-dom"
 
+import BackLink from "@/components/BackLink"
 import type { DecorItem } from "@/components/FloatingDecor"
 import PageShell from "@/components/PageShell"
 import CaptionSticker, {
@@ -79,13 +78,7 @@ export default function FlowerPage() {
   return (
     <PageShell decor={DECOR} corners={["top-right", "bottom-left", "bottom-right"]}>
       <main className="relative z-10 mx-auto flex w-full max-w-4xl flex-col px-4 pt-4 pb-[clamp(9rem,28vw,14rem)] sm:px-6">
-        <Link
-          to="/"
-          className="sticky top-3 z-20 inline-flex min-h-12 w-fit touch-manipulation items-center gap-1.5 rounded-full border border-blush-border bg-wine-soft py-2 pr-5 pl-3 font-hand text-xl font-semibold text-foreground shadow-[0_4px_14px_rgba(0,0,0,0.4)] outline-none transition-colors hover:bg-wine hover:text-blush active:scale-95 focus-visible:ring-4 focus-visible:ring-ring/60"
-        >
-          <ChevronLeftIcon className="size-6" aria-hidden="true" />
-          Back to gifts
-        </Link>
+        <BackLink />
 
         <header className="mt-1 mb-8 text-center sm:mb-10">
           <h1 className="font-script text-[clamp(2.8rem,11vw,5.25rem)] leading-[1.05] text-foreground">

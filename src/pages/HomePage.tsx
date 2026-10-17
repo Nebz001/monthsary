@@ -1,5 +1,6 @@
-import { useEffect, useRef, useState } from "react"
+import { useEffect, useRef, useState, type MouseEvent } from "react"
 import { animate, stagger } from "animejs"
+import { useNavigate } from "react-router-dom"
 
 import type { DecorItem } from "@/components/FloatingDecor"
 import HomeItem from "@/components/HomeItem"
@@ -25,6 +26,8 @@ export default function HomePage() {
   // The entrance plays every time the page appears, after unlocking and when coming back.
   const [playIntro] = useState(() => !reduced)
   const mainRef = useRef<HTMLElement>(null)
+  const navigate = useNavigate()
+  const leaving = useRef(false)
 
   useEffect(() => {
     if (!playIntro || !mainRef.current) return
@@ -39,6 +42,35 @@ export default function HomePage() {
       anim.revert()
     }
   }, [playIntro])
+
+  // Leaving home: the chosen circle swells and fades while everything else drifts away,
+  // then the route changes. Modified clicks (new tab) and reduced motion skip it.
+  const handleOpen = (e: MouseEvent<HTMLAnchorElement>, to: string) => {
+    if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || e.button !== 0) return
+    e.preventDefault()
+    if (leaving.current) return
+    if (reduced || !mainRef.current) {
+      navigate(to)
+      return
+    }
+    leaving.current = true
+    const chosen = e.currentTarget
+    const others = Array.from(
+      mainRef.current.querySelectorAll("[data-intro]"),
+    ).filter((el) => el !== chosen)
+    animate(others, {
+      opacity: [1, 0],
+      translateY: [0, -14],
+      duration: 450,
+      ease: "inQuad",
+    })
+    animate(chosen, {
+      scale: [1, 1.12, 1.3],
+      opacity: [1, 1, 0],
+      duration: 750,
+      ease: "inOutQuad",
+    }).then(() => navigate(to))
+  }
 
   // Hidden only while the intro is about to run, so nothing flashes first.
   const hidden = playIntro ? { opacity: 0 } : undefined
@@ -87,6 +119,7 @@ export default function HomePage() {
             className="col-span-2 sm:col-span-1"
             sizeClass={`[--c:46vw] ${CIRCLE_DESKTOP}`}
             style={hidden}
+            onClick={(e) => handleOpen(e, "/flower")}
           />
           <HomeItem
             to="/letter"
@@ -94,6 +127,7 @@ export default function HomePage() {
             image="letter.png"
             sizeClass={`[--c:36vw] ${CIRCLE_DESKTOP}`}
             style={hidden}
+            onClick={(e) => handleOpen(e, "/letter")}
           />
           <HomeItem
             to="/song"
@@ -101,6 +135,7 @@ export default function HomePage() {
             image="record-player.png"
             sizeClass={`[--c:36vw] ${CIRCLE_DESKTOP}`}
             style={hidden}
+            onClick={(e) => handleOpen(e, "/song")}
           />
         </nav>
 

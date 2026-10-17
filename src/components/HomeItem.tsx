@@ -1,4 +1,4 @@
-import type { CSSProperties } from "react"
+import type { CSSProperties, MouseEventHandler } from "react"
 import { Link } from "react-router-dom"
 
 import { IMG_SIZE, img } from "@/lib/assets"
@@ -12,6 +12,7 @@ type HomeItemProps = {
   // Circle diameter, set through the --c variable.
   sizeClass: string
   style?: CSSProperties
+  onClick?: MouseEventHandler<HTMLAnchorElement>
 }
 
 export default function HomeItem({
@@ -21,6 +22,7 @@ export default function HomeItem({
   className = "",
   sizeClass,
   style,
+  onClick,
 }: HomeItemProps) {
   return (
     <Link
@@ -28,6 +30,7 @@ export default function HomeItem({
       aria-label={`Open ${label}`}
       data-intro
       style={style}
+      onClick={onClick}
       className={`group flex touch-manipulation flex-col items-center gap-[0.5dvh] rounded-3xl p-1 outline-none focus-visible:ring-4 focus-visible:ring-ring/60 ${className}`}
     >
       <span
