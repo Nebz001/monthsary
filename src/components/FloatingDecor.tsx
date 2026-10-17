@@ -42,7 +42,22 @@ function Corner({ className }: { className: string }) {
   )
 }
 
-export default function FloatingDecor({ items }: { items: DecorItem[] }) {
+export type CornerName = "top-right" | "bottom-left" | "bottom-right"
+
+// Corner art is drawn top left, so each corner flips it into place.
+const CORNER_CLASS: Record<CornerName, string> = {
+  "top-right": "top-0 right-0 -scale-x-100",
+  "bottom-left": "bottom-0 left-0 -scale-y-100",
+  "bottom-right": "right-0 bottom-0 -scale-100",
+}
+
+export default function FloatingDecor({
+  items,
+  corners = ["top-right", "bottom-left"],
+}: {
+  items: DecorItem[]
+  corners?: CornerName[]
+}) {
   const rootRef = useRef<HTMLDivElement>(null)
   const reduced = usePrefersReducedMotion()
 
@@ -82,8 +97,9 @@ export default function FloatingDecor({ items }: { items: DecorItem[] }) {
       aria-hidden="true"
       className="pointer-events-none absolute inset-0 overflow-hidden"
     >
-      <Corner className="top-0 right-0 -scale-x-100" />
-      <Corner className="bottom-0 left-0 -scale-y-100" />
+      {corners.map((name) => (
+        <Corner key={name} className={CORNER_CLASS[name]} />
+      ))}
 
       {items.map((item, i) => (
         <img

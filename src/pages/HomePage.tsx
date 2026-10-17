@@ -20,12 +20,10 @@ const DECOR: DecorItem[] = [
 
 const CIRCLE_DESKTOP = "sm:[--c:min(26vw,26dvh,17rem)]"
 
-// The entrance plays once per visit; coming back from an item page just shows the page.
-let introPlayed = false
-
 export default function HomePage() {
   const reduced = usePrefersReducedMotion()
-  const [playIntro] = useState(() => !introPlayed && !reduced)
+  // The entrance plays every time the page appears, after unlocking and when coming back.
+  const [playIntro] = useState(() => !reduced)
   const mainRef = useRef<HTMLElement>(null)
 
   useEffect(() => {
@@ -36,9 +34,6 @@ export default function HomePage() {
       duration: 900,
       delay: stagger(220, { start: 150 }),
       ease: "outQuad",
-    })
-    anim.then(() => {
-      introPlayed = true
     })
     return () => {
       anim.revert()
