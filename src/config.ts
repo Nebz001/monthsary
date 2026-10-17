@@ -1,4 +1,4 @@
-// TODO: I need to set the real month and day (MMDD) myself, e.g. "0214" for February 14.
-export const UNLOCK_CODE = "0000"
+// Month and day she said yes, as MMDD (August 20).
+export const UNLOCK_CODE = "0820"
 
 export const SESSION_KEY = "monthsary:unlocked"
